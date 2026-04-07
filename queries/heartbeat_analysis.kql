@@ -1,0 +1,12 @@
+// Title: Telemetry Pipeline Gap Analysis
+// Description: This query visualizes the ingestion health of the Azure Monitor Agent (AMA).
+// Used to identify the 48h telemetry gap caused by system hardening policies.
+
+Heartbeat
+| where TimeGenerated > ago(3d)
+| make-series HeartbeatCount = count() on TimeGenerated from ago(3d) to now() step 1h
+| render timechart with (
+    title="Telemetry Pipeline Gap Analysis", 
+    ytitle="Beats per Hour", 
+    xtitle="Time (UTC)"
+)

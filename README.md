@@ -24,3 +24,19 @@ Monitoring for EventID 4625 (An account failed to log on) to detect unauthorized
 - `/KQL`: Production-ready detection queries.
 - `/Docs`: Architectural milestones and technical deep-dives.
 - `/Artifacts`: Evidence of successful log ingestion and SOC visibility.
+
+## 🚀 Key Milestones & Troubleshooting
+
+### Phase 2: Hybrid Connectivity & Agent Deployment
+* **Challenge:** The onboarding script for Azure Arc was blocked by the hardened system's PSSecurityException (UnauthorizedAccess).
+* **Cause:** Strict PowerShell Execution Policy (AllSigned/Restricted) from Phase 1 hardening.
+* **Resolution:** Executed a session-specific bypass to allow agent initialization:
+  `powershell.exe -ExecutionPolicy Bypass -File .\OnboardingScript.ps1`
+* **Evidence:** See logs in `/evidence/Post 3 - Agent problem.jpg`
+
+### Phase 3: Telemetry Stabilization & Sentinel Ingestion
+* **Challenge:** 48-hour "Heartbeat" gap in Log Analytics. No security events were being ingested after initial connection.
+* **Troubleshooting:** Used KQL to perform a Gap Analysis, revealing that hardening policies were interfering with the Azure Monitor Agent (AMA).
+* **Resolution:** 1. Re-configured Data Collection Rules (DCR) with custom XPath queries for Event IDs 4624 & 4625.
+  2. Performed a clean redeployment of the AMA agent to reset local communication channels.
+* **KQL Validation:** [Heartbeat Gap Analysis Query](./queries/heartbeat_analysis.kql)

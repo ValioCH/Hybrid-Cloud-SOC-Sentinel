@@ -1,0 +1,1 @@
+This folder will contain ARM/Bicep templates for automated SOC deployment in future phases.
