@@ -32,7 +32,7 @@ Monitoring for EventID 4625 (An account failed to log on) to detect unauthorized
 * **Cause:** Strict PowerShell Execution Policy (AllSigned/Restricted) from Phase 1 hardening.
 * **Resolution:** Executed a session-specific bypass to allow agent initialization:
   `powershell.exe -ExecutionPolicy Bypass -File .\OnboardingScript.ps1`
-* **Evidence:** See logs in `/evidence/Post 3 - Agent problem.jpg`
+* **Evidence:** See logs in [/evidence/arc-agent-onboarding-error.jpg]
 
 ### Phase 3: Telemetry Stabilization & Sentinel Ingestion
 * **Challenge:** 48-hour "Heartbeat" gap in Log Analytics. No security events were being ingested after initial connection.
