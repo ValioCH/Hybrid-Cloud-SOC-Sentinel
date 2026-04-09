@@ -1,0 +1,15 @@
+// Title: RDP Brute Force Detection
+// Description: Detects multiple failed RDP logon attempts from a single source IP.
+// Event ID: 4625 (An account failed to log on)
+
+SecurityEvent
+| where EventID == 4625
+| where IpAddress != "-"
+| summarize 
+    StartTime = min(TimeGenerated), 
+    EndTime = max(TimeGenerated), 
+    AttemptCount = count() 
+    by IpAddress, TargetAccount, WorkstationName, LogonProcessName
+| where AttemptCount > 5
+| project StartTime, EndTime, IpAddress, TargetAccount, AttemptCount, WorkstationName, LogonProcessName
+| sort by AttemptCount desc
